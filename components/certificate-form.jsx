@@ -43,7 +43,9 @@ export default function CertificateForm() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to generate certificate")
+        console.log("[v0] Certificate generation failed:", data.error)
+        setLoading(false)
+        return
       }
 
       setMessage(`Success! Certificate has been generated and sent to ${formData.email}`)
@@ -55,7 +57,7 @@ export default function CertificateForm() {
         businessAddress: "",
       })
     } catch (err) {
-      setError(err.message || "An error occurred")
+      console.log("[v0] Error in certificate generation:", err.message)
     } finally {
       setLoading(false)
     }
@@ -127,12 +129,6 @@ export default function CertificateForm() {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
-
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-700 text-sm">{error}</p>
-        </div>
-      )}
 
       {message && (
         <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
